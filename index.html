@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>婚礼邀请函 · 金席焕 &amp; 牛嘉倩</title>
+
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   폰트: 외부 요청 없이 시스템 폰트만 사용
+   중국 기기 내장 세리프: STSong / SimSun / 宋体
+   한국 표기 폴백: 맑은고딕 / Apple SD Gothic
+   영문 폴백: Georgia / Times New Roman
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --f-serif: 'STSong', 'SimSun', '宋体', 'Songti SC', '华文宋体', Georgia, 'Times New Roman', serif;
+  --f-sans:  'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  --f-num:   Georgia, 'Times New Roman', serif;
+
+  --warm-white: #FDFAF6;
+  --charcoal:   #2A2725;
+  --muted:      #7A7470;
+  --gold:       #B89A6A;
+  --gold-light: #D4B88A;
+  --line:       rgba(42,39,37,0.13);
+  --bg:         #E8E2DA;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: var(--f-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%; /* iOS 글자크기 자동조정 방지 */
+}
+
+/* ─── 언어 선택 화면 ─── */
+#lang-screen {
+  position: fixed; inset: 0;
+  background: var(--charcoal);
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+  z-index: 999;
+  -webkit-transition: opacity 0.8s, -webkit-transform 0.8s;
+  transition: opacity 0.8s, transform 0.8s;
+}
+#lang-screen.out {
+  opacity: 0; pointer-events: none;
+  -webkit-transform: scale(1.04); transform: scale(1.04);
+}
+
+.ls-deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.ls-deco::before {
+  content: 'K & N';
+  position: absolute; top: 50%; left: 50%;
+  -webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%);
+  font-family: Georgia, serif; font-style: italic;
+  font-size: clamp(90px, 26vw, 200px);
+  color: rgba(184,154,106,0.055);
+  white-space: nowrap; user-select: none; -webkit-user-select: none;
+}
+.ls-line { position: absolute; left: 36px; right: 36px; height: 1px; background: rgba(184,154,106,0.2); }
+.ls-line--t { top: 36px; }
+.ls-line--b { bottom: 36px; }
+
+.ls-inner { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+
+.ls-eyebrow {
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 22px;
+  font-family: var(--f-sans);
+  animation: fade 0.9s 0.15s both;
+}
+.ls-name {
+  font-family: var(--f-serif); font-size: clamp(28px, 7vw, 50px);
+  font-weight: 400; color: #F8F4EE; line-height: 1.25; margin-bottom: 6px;
+  animation: fade 0.9s 0.3s both;
+}
+.ls-name-zh {
+  font-family: var(--f-serif); font-size: clamp(13px, 3vw, 20px);
+  color: rgba(248,244,238,0.38); margin-bottom: 48px;
+  animation: fade 0.9s 0.44s both;
+}
+.ls-prompt {
+  font-family: var(--f-sans); font-size: 11px; line-height: 1.9;
+  color: rgba(184,154,106,0.55); margin-bottom: 22px;
+  animation: fade 0.9s 0.58s both;
+}
+.ls-btns {
+  display: -webkit-flex; display: flex;
+  gap: 12px; -webkit-justify-content: center; justify-content: center;
+  animation: fade 0.9s 0.72s both;
+  -webkit-flex-wrap: wrap; flex-wrap: wrap;
+}
+
+.ls-btn {
+  cursor: pointer; border: 1px solid rgba(184,154,106,0.45);
+  background: transparent; color: #F8F4EE;
+  font-family: var(--f-sans); font-size: 13px;
+  padding: 14px 28px;
+  -webkit-tap-highlight-color: rgba(0,0,0,0); /* 모바일 탭 하이라이트 제거 */
+  -webkit-transition: background 0.28s, color 0.28s, border-color 0.28s;
+  transition: background 0.28s, color 0.28s, border-color 0.28s;
+}
+.ls-btn:active, .ls-btn:hover {
+  background: var(--gold); color: var(--charcoal); border-color: var(--gold);
+}
+.ls-btn-main { display: block; font-size: 15px; }
+.ls-btn-sub  { display: block; font-size: 10px; letter-spacing: 0.22em; opacity: 0.55; margin-top: 3px; }
+
+@keyframes fade {
+  from { opacity: 0; -webkit-transform: translateY(12px); transform: translateY(12px); }
+  to   { opacity: 1; -webkit-transform: none; transform: none; }
+}
+
+/* ─── 메인 ─── */
+#main { display: none; padding: 44px 14px 80px; }
+
+.card { background: var(--warm-white); width: 100%; max-width: 540px; margin: 0 auto; }
+.gold-bar {
+  height: 5px;
+  background: -webkit-linear-gradient(left, transparent, var(--gold) 25%, var(--gold-light) 50%, var(--gold) 75%, transparent);
+  background: linear-gradient(90deg, transparent, var(--gold) 25%, var(--gold-light) 50%, var(--gold) 75%, transparent);
+}
+.inner { padding: 52px 44px 60px; position: relative; }
+
+.corner { position: absolute; width: 34px; height: 34px; opacity: 0.26; }
+.corner--tl { top: 16px; left: 16px; border-top: 1px solid var(--charcoal); border-left: 1px solid var(--charcoal); }
+.corner--tr { top: 16px; right: 16px; border-top: 1px solid var(--charcoal); border-right: 1px solid var(--charcoal); }
+.corner--bl { bottom: 16px; left: 16px; border-bottom: 1px solid var(--charcoal); border-left: 1px solid var(--charcoal); }
+.corner--br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--charcoal); border-right: 1px solid var(--charcoal); }
+
+/* 스크롤 애니메이션 — WeChat 구버전 대비 폴백 포함 */
+.rv {
+  opacity: 0;
+  -webkit-transform: translateY(22px); transform: translateY(22px);
+  -webkit-transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+                      -webkit-transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+              transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.rv.d1 { -webkit-transition-delay: 0.06s; transition-delay: 0.06s; }
+.rv.d2 { -webkit-transition-delay: 0.13s; transition-delay: 0.13s; }
+.rv.d3 { -webkit-transition-delay: 0.20s; transition-delay: 0.20s; }
+.rv.d4 { -webkit-transition-delay: 0.27s; transition-delay: 0.27s; }
+.rv.on { opacity: 1; -webkit-transform: none; transform: none; }
+
+/* ─── 타이포그래피 ─── */
+.eyebrow {
+  font-family: var(--f-sans); font-size: 11px; letter-spacing: 0.3em;
+  color: var(--gold); text-align: center; display: block; margin-bottom: 24px;
+}
+.names {
+  font-family: var(--f-serif); font-size: 44px; font-weight: 400;
+  color: var(--charcoal); text-align: center; line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+.names .amp { font-family: Georgia, serif; font-style: italic; font-size: 32px; color: var(--gold); display: block; margin: 6px 0; }
+
+.divider { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 14px; margin: 28px 0; }
+.divider::before, .divider::after { content: ''; -webkit-flex: 1; flex: 1; height: 1px; background: var(--line); }
+.diamond { width: 6px; height: 6px; background: var(--gold); -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-flex-shrink: 0; flex-shrink: 0; }
+
+.body-text {
+  font-family: var(--f-serif); font-size: 15px; color: var(--muted);
+  text-align: center; line-height: 2.2; letter-spacing: 0.03em;
+}
+
+/* ─── 디테일 그리드 ─── */
+.detail-grid {
+  display: -webkit-flex; display: flex;
+  -webkit-flex-wrap: wrap; flex-wrap: wrap;
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin-top: 28px;
+}
+.di { background: var(--warm-white); padding: 18px 12px; text-align: center; -webkit-flex: 1 1 45%; flex: 1 1 45%; min-width: 0; }
+.di--full { -webkit-flex: 1 1 100%; flex: 1 1 100%; }
+
+.di-label {
+  font-family: var(--f-sans); font-size: 9px; letter-spacing: 0.26em;
+  text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px;
+}
+.di-val {
+  font-family: var(--f-num); font-size: 19px; color: var(--charcoal);
+  display: block; line-height: 1.3;
+}
+.di-val.zh { font-family: var(--f-serif); font-size: 16px; }
+.di-sub { font-family: var(--f-serif); font-size: 12px; color: var(--muted); display: block; margin-top: 4px; }
+
+/* ─── 섹션 ─── */
+.section { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.sec-title {
+  font-family: var(--f-sans); font-size: 10px; letter-spacing: 0.28em;
+  color: var(--gold); text-align: center; display: block; margin-bottom: 20px;
+}
+
+/* ─── 교통 ─── */
+.tlist { list-style: none; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; gap: 14px; }
+.titem { display: -webkit-flex; display: flex; gap: 12px; -webkit-align-items: flex-start; align-items: flex-start; }
+.ticon { width: 34px; height: 34px; border: 1px solid var(--line); -webkit-flex-shrink: 0; flex-shrink: 0; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; font-size: 16px; }
+.tname { font-family: var(--f-sans); font-size: 10px; letter-spacing: 0.18em; color: var(--charcoal); display: block; margin-bottom: 3px; }
+.tdesc { font-family: var(--f-serif); font-size: 13px; color: var(--muted); line-height: 1.85; }
+
+/* ─── 지도 안내 ─── */
+.map-note { border: 1px solid var(--line); padding: 16px; text-align: center; margin-top: 14px; }
+.map-note p { font-family: var(--f-serif); font-size: 13px; color: var(--muted); line-height: 1.9; }
+.map-link {
+  display: inline-block; margin-top: 10px;
+  font-family: var(--f-sans); font-size: 10px; letter-spacing: 0.22em;
+  color: var(--gold); border-bottom: 1px solid rgba(184,154,106,0.4);
+  text-decoration: none; padding-bottom: 2px;
+}
+
+/* ─── 계좌 ─── */
+.acc-grid { display: -webkit-flex; display: flex; gap: 10px; -webkit-flex-wrap: wrap; flex-wrap: wrap; }
+.acc-card { border: 1px solid var(--line); padding: 18px 12px; text-align: center; -webkit-flex: 1 1 45%; flex: 1 1 45%; min-width: 140px; }
+.acc-role { font-family: var(--f-sans); font-size: 9px; letter-spacing: 0.24em; color: var(--gold); display: block; margin-bottom: 7px; }
+.acc-name { font-family: var(--f-serif); font-size: 17px; color: var(--charcoal); display: block; margin-bottom: 3px; }
+.acc-bank { font-family: var(--f-sans); font-size: 11px; color: var(--muted); display: block; margin-bottom: 5px; }
+.acc-num  { font-family: var(--f-sans); font-size: 12px; letter-spacing: 0.06em; color: var(--charcoal); display: block; }
+.copy-btn {
+  margin-top: 10px; font-family: var(--f-sans); font-size: 10px;
+  color: var(--gold); background: none;
+  border: 1px solid rgba(184,154,106,0.4); padding: 6px 14px;
+  cursor: pointer; -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-transition: all 0.22s; transition: all 0.22s;
+}
+.copy-btn:active, .copy-btn:hover { background: var(--gold); color: white; border-color: var(--gold); }
+.copy-btn.ok { background: #6B9E78; border-color: #6B9E78; color: white; }
+
+/* ─── 연락처 ─── */
+.con-grid { display: -webkit-flex; display: flex; gap: 10px; -webkit-flex-wrap: wrap; flex-wrap: wrap; }
+.con-item { border: 1px solid var(--line); padding: 15px 10px; text-align: center; -webkit-flex: 1 1 45%; flex: 1 1 45%; min-width: 130px; }
+.con-role { font-family: var(--f-sans); font-size: 9px; letter-spacing: 0.22em; color: var(--gold); display: block; margin-bottom: 5px; }
+.con-name { font-family: var(--f-serif); font-size: 14px; color: var(--charcoal); display: block; margin-bottom: 4px; }
+.con-phone { font-family: var(--f-sans); font-size: 12px; color: var(--muted); }
+.con-phone a { color: inherit; text-decoration: none; }
+
+/* ─── RSVP ─── */
+.rsvp-box { border: 1px solid var(--line); padding: 20px; text-align: center; }
+.rsvp-box p { font-family: var(--f-serif); font-size: 14px; color: var(--muted); line-height: 2; margin-bottom: 12px; }
+.rsvp-date { font-family: var(--f-num); font-size: 20px; color: var(--charcoal); display: block; margin-bottom: 6px; }
+.rsvp-note { font-family: var(--f-sans); font-size: 11px; color: var(--muted); line-height: 1.7; display: block; }
+
+/* ─── 클로징 ─── */
+.closing { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center; }
+.closing p { font-family: var(--f-serif); font-size: 15px; color: var(--muted); line-height: 2.1; }
+.monogram { font-family: Georgia, serif; font-style: italic; font-size: 28px; color: var(--gold); display: block; margin-top: 20px; opacity: 0.65; }
+
+@media (max-width: 480px) {
+  .inner { padding: 38px 24px 48px; }
+  .names { font-size: 34px; }
+  .names .amp { font-size: 24px; }
+  .acc-card, .con-item { -webkit-flex: 1 1 100%; flex: 1 1 100%; }
+  .ls-btns { -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: center; align-items: center; }
+}
+
+.qr-modal {
+  display: none; position: fixed; inset: 0; 
+  background: rgba(0,0,0,0.85); z-index: 1000;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+}
+.qr-content { background: white; padding: 20px; border-radius: 12px; text-align: center; max-width: 80%; }
+.qr-content img { width: 100%; height: auto; display: block; }
+.qr-close { margin-top: 15px; color: var(--gold); font-size: 14px; border: none; background: none; }
+
+/* 추가: 하단 고정 안내 바 (중국 하객용) */
+.wechat-tip {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(42,39,37,0.9); color: white;
+  font-size: 11px; padding: 10px; text-align: center;
+  z-index: 900; font-family: var(--f-sans);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── 언어 선택 ── -->
+<div id="lang-screen">
+  <div class="ls-deco"></div>
+  <div class="ls-line ls-line--t"></div>
+  <div class="ls-line ls-line--b"></div>
+  <div class="ls-inner">
+    <span class="ls-eyebrow">2026 · 09 · 12 · Saturday</span>
+    <div class="ls-name">金席焕 &amp; 牛嘉倩</div>
+    <div class="ls-name-zh">김석환 &amp; 뉴 쟈첸</div>
+    <p class="ls-prompt">请选择语言<br>언어를 선택해 주세요</p>
+    <div class="ls-btns">
+      <button class="ls-btn" onclick="go('zh')">
+        <span class="ls-btn-main">中文</span>
+        <span class="ls-btn-sub">CHINESE</span>
+      </button>
+      <button class="ls-btn" onclick="go('ko')">
+        <span class="ls-btn-main">한국어</span>
+        <span class="ls-btn-sub">KOREAN</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 메인 초대장 ── -->
+<div id="main">
+<div class="card">
+  <div class="gold-bar"></div>
+  <div class="inner">
+    <div class="corner corner--tl"></div>
+    <div class="corner corner--tr"></div>
+    <div class="corner corner--bl"></div>
+    <div class="corner corner--br"></div>
+
+    <!-- 헤더 -->
+    <div class="rv d1">
+      <span class="eyebrow" id="txt-eyebrow">婚礼邀请函</span>
+    </div>
+    <div class="rv d2">
+      <div class="names" id="txt-names">
+        <span id="name-groom">金席焕</span>
+        <span class="amp">&amp;</span>
+        <span id="name-bride">牛嘉倩</span>
+      </div>
+    </div>
+
+    <div class="divider rv d3"><div class="diamond"></div></div>
+
+    <!-- 초대 문구 -->
+    <div class="rv d4">
+      <p class="body-text" id="txt-invite">
+        在共同走过的岁月里，我们相识相知，<br>
+        如今决定执手共度余生。<br><br>
+        在我们分享爱与承诺的神圣时刻，<br>
+        诚邀您莅临现场，<br>
+        为我们的新旅程送上祝福。
+      </p>
+    </div>
+
+    <!-- ── 중국 현지 예식 ── -->
+    <div class="section rv" id="sec-cn">
+      <span class="sec-title" id="sec-cn-title">中国婚礼日程</span>
+      <div class="detail-grid">
+        <div class="di">
+          <span class="di-label" id="lbl-cn-date">日期</span>
+          <span class="di-val di-val--num">2026. 08. 16</span>
+          <span class="di-sub" id="sub-cn-day">星期六</span>
+        </div>
+        <div class="di">
+          <span class="di-label" id="lbl-cn-time">时间</span>
+          <span class="di-val di-val--num">11:00</span>
+          <span class="di-sub" id="sub-cn-door">入场时间 10:30起</span>
+        </div>
+        <div class="di di--full">
+          <span class="di-label" id="lbl-cn-venue">地点</span>
+          <span class="di-val zh" id="val-cn-venue">중국 현지 예식장 이름</span>
+          <span class="di-sub" id="sub-cn-addr">상세 주소를 여기에 입력해 주세요</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 중국 예식장 교통 -->
+    <div class="section rv" id="sec-cn-transport">
+      <span class="sec-title" id="lbl-cn-transport">中国婚礼交通指南</span>
+      <ul class="tlist">
+        <li class="titem">
+          <div class="ticon">🚇</div>
+          <div>
+            <span class="tname" id="tname-cn-subway">地铁</span>
+            <span class="tdesc" id="tdesc-cn-subway">중국 예식장 지하철 안내를 입력해 주세요</span>
+          </div>
+        </li>
+        <li class="titem">
+          <div class="ticon">🚌</div>
+          <div>
+            <span class="tname" id="tname-cn-bus">公交</span>
+            <span class="tdesc" id="tdesc-cn-bus">중국 예식장 버스 안내를 입력해 주세요</span>
+          </div>
+        </li>
+        <li class="titem">
+          <div class="ticon">🚗</div>
+          <div>
+            <span class="tname" id="tname-cn-car">自驾 · 停车</span>
+            <span class="tdesc" id="tdesc-cn-car">중국 예식장 주차 안내를 입력해 주세요</span>
+          </div>
+        </li>
+      </ul>
+      <div class="map-note">
+        <p id="txt-cn-map">请在高德地图或百度地图中搜索婚礼场地。</p>
+        <!-- 지도: 외부 요청 없이 딥링크로 앱 열기 -->
+        <a class="map-link" href="https://www.amap.com/" target="_blank" id="link-cn-map">打开高德地图 ↗</a>
+      </div>
+    </div>
+
+    <!-- ── 한국 예식 ── -->
+    <div class="section rv" id="sec-kr">
+      <span class="sec-title" id="sec-kr-title">韩国婚礼日程</span>
+      <div class="detail-grid">
+        <div class="di">
+          <span class="di-label" id="lbl-kr-date">日期</span>
+          <span class="di-val di-val--num">2026. 09. 12</span>
+          <span class="di-sub" id="sub-kr-day">星期六</span>
+        </div>
+        <div class="di">
+          <span class="di-label" id="lbl-kr-time">时间</span>
+          <span class="di-val di-val--num">11:00</span>
+          <span class="di-sub" id="sub-kr-door">入场时间 10:30起</span>
+        </div>
+        <div class="di di--full">
+          <span class="di-label" id="lbl-kr-venue">地点</span>
+          <span class="di-val zh" id="val-kr-venue">목장원 (Mokjangwon)</span>
+          <span class="di-sub" id="sub-kr-addr">355 Jeoryeong-ro, Yeongdo-gu, Busan, Korea</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 한국 예식장 교통 -->
+    <div class="section rv" id="sec-kr-transport">
+      <span class="sec-title" id="lbl-kr-transport">韩国婚礼交通指南</span>
+      <ul class="tlist">
+        <li class="titem">
+          <div class="ticon">🚇</div>
+          <div>
+            <span class="tname" id="tname-kr-subway">地铁</span>
+            <span class="tdesc" id="tdesc-kr-subway">搭乘地铁1号线至南浦站(6号出口)，<br>在影岛大桥站换乘7、71或508路公交车，至75广场下车。</span>
+          </div>
+        </li>
+        <li class="titem">
+          <div class="ticon">🚌</div>
+          <div>
+            <span class="tname" id="tname-kr-bus">公交</span>
+            <span class="tdesc" id="tdesc-kr-bus">在釜山站正对面搭乘508路公交车，至75广场下车。</span>
+          </div>
+        </li>
+        <li class="titem">
+          <div class="ticon">🚗</div>
+          <div>
+            <span class="tname" id="tname-kr-car">自驾 · 停车</span>
+            <span class="tdesc" id="tdesc-kr-car">内部停车场可停约150辆车。<br>周末停车位紧张，强烈建议乘坐公共交通。</span>
+          </div>
+        </li>
+      </ul>
+      <div class="map-note">
+        <p id="txt-kr-map">请在Naver地图或Kakao地图上搜索"목장원"。</p>
+        <a class="map-link" href="https://map.naver.com/v5/search/목장원" target="_blank" id="link-kr-map">打开Naver地图 ↗</a>
+      </div>
+    </div>
+
+    <!-- RSVP -->
+    <div class="section rv">
+      <span class="sec-title" id="lbl-rsvp">宾客回执 · RSVP</span>
+      <div class="rsvp-box">
+        <p id="txt-rsvp">为了帮助我们做好准备，<br>请在以下日期前告知是否出席：</p>
+        <span class="rsvp-date" id="rsvp-date">2026. 08. 09</span>
+        <span class="rsvp-note" id="rsvp-note">请通过电话或微信联系新郎或新娘告知是否出席。</span>
+      </div>
+    </div>
+
+    <!-- 계좌 -->
+    <div class="section rv">
+        <span class="sec-title" id="lbl-gift">礼金账户 · Gift</span>
+        <div class="acc-grid">
+          <div class="acc-card">
+            <span class="acc-role" id="role-groom">新郎方 (KR)</span>
+            <span class="acc-name" id="acc-groom-name">金席焕</span>
+            <span class="acc-bank">KakaoBank</span>
+            <span class="acc-num">3333-01-2345678</span>
+            <button class="copy-btn" onclick="doCopy(this,'333301234567')">复制</button>
+          </div>
+          <!-- 위챗페이 QR 연동 부분 -->
+          <div class="acc-card">
+            <span class="acc-role" id="role-bride">新娘方 (CN)</span>
+            <span class="acc-name" id="acc-bride-name">牛嘉倩</span>
+            <span class="acc-bank">WeChat Pay / Alipay</span>
+            <button class="copy-btn" style="background: #07C160; color: white; border: none;" onclick="showQR()">
+              查看收款码 (QR Code)
+            </button>
+          </div>
+        </div>
+     </div>
+
+    <!-- 연락처 -->
+    <div class="section rv">
+      <span class="sec-title" id="lbl-contact">联系方式</span>
+      <div class="con-grid">
+        <div class="con-item">
+          <span class="con-role" id="role-g">新郎</span>
+          <span class="con-name" id="name-g">金席焕</span>
+          <span class="con-phone"><a href="tel:01012345678">010-1234-5678</a></span>
+        </div>
+        <div class="con-item">
+          <span class="con-role" id="role-b">新娘</span>
+          <span class="con-name" id="name-b">牛嘉倩</span>
+          <span class="con-phone"><a href="tel:01098765432">010-9876-5432</a></span>
+        </div>
+      </div>
+      <div class="map-note" style="margin-top:12px;">
+        <p id="txt-wechat">如有疑问，欢迎通过微信联系新郎或新娘。<br>微信号：请向本人确认</p>
+      </div>
+    </div>
+
+    <!-- 클로징 -->
+    <div class="closing rv">
+      <p id="txt-closing">无论远近，您的温暖祝愿对我们而言意义深远。<br>感谢每一位莅临的嘉宾。</p>
+      <span class="monogram">K &amp; N</span>
+    </div>
+
+  </div><!-- /inner -->
+  <div class="gold-bar"></div>
+</div><!-- /card -->
+</div><!-- /main -->
+
+<div id="qr-modal" class="qr-modal" onclick="closeQR()">
+  <div class="qr-content" onclick="event.stopPropagation()">
+    <p style="font-size: 14px; margin-bottom: 15px; color: #333;">长按识别二维码进行支付<br>(길게 누르면 결제가 가능합니다)</p>
+    <img src="./images/wechat_pay_qr.jpg" alt="WeChat Pay">
+    <button class="qr-close" onclick="closeQR()">关闭 (Close)</button>
+  </div>
+</div>
+
+<div class="wechat-tip" id="wechat-tip" style="display:none;">
+  请点击右上角 ··· 收藏此页面，以便随时查看。
+</div>
+
+<script>
+
+function showQR() {
+  document.getElementById('qr-modal').style.display = 'flex';
+}
+function closeQR() {
+  document.getElementById('qr-modal').style.display = 'none';
+}
+
+if (navigator.userAgent.indexOf('MicroMessenger') > -1) {
+  document.getElementById('wechat-tip').style.display = 'block';
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   텍스트 데이터 — 언어별 분리
+   zh = 중국어(간체) / ko = 한국어
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+var TEXTS = {
+  zh: {
+    eyebrow: '婚礼邀请函',
+    nameGroom: '金席焕', nameBride: '牛嘉倩',
+    invite: '在共同走过的岁月里，我们相识相知，<br>如今决定执手共度余生。<br><br>在我们分享爱与承诺的神圣时刻，<br>诚邀您莅临现场，<br>为我们的新旅程送上祝福。',
+    secCnTitle: '中国婚礼日程',   lblCnDate: '日期',   subCnDay: '星期六',
+    lblCnTime: '时间',             subCnDoor: '入场时间 10:30起',
+    lblCnVenue: '地点',
+    lblCnTransport: '中国婚礼交通指南',
+    tnameCnSubway: '地铁', tnameCnBus: '公交', tnameCnCar: '自驾 · 停车',
+    txtCnMap: '请在高德地图或百度地图中搜索婚礼场地。', linkCnMap: '打开高德地图 ↗',
+    secKrTitle: '韩国婚礼日程',   lblKrDate: '日期',   subKrDay: '星期六',
+    lblKrTime: '时间',             subKrDoor: '入场时间 10:30起',
+    lblKrVenue: '地点',
+    lblKrTransport: '韩国婚礼交通指南',
+    tnameKrSubway: '地铁',
+    tdescKrSubway: '搭乘地铁1号线至南浦站(6号出口)，<br>在影岛大桥站换乘7、71或508路公交车，至75广场下车。',
+    tnameKrBus: '公交',
+    tdescKrBus: '在釜山站正对面搭乘508路公交车，至75广场下车。',
+    tnameKrCar: '自驾 · 停车',
+    tdescKrCar: '内部停车场可停约150辆车。<br>周末停车位紧张，强烈建议乘坐公共交通。',
+    txtKrMap: '请在Naver地图或Kakao地图上搜索"목장원"。', linkKrMap: '打开Naver地图 ↗',
+    lblRsvp: '宾客回执 · RSVP',
+    txtRsvp: '为了帮助我们做好准备，<br>请在以下日期前告知是否出席：',
+    rsvpDate: '2026. 08. 09',
+    rsvpNote: '请通过电话或微信联系新郎或新娘告知是否出席。',
+    lblGift: '礼金账户',
+    roleGroom: '新郎方', roleBride: '新娘方',
+    accGroomName: '金席焕', accBrideName: '牛嘉倩',
+    lblContact: '联系方式',
+    roleG: '新郎', roleB: '新娘',
+    nameG: '金席焕', nameB: '牛嘉倩',
+    txtWechat: '如有疑问，欢迎通过微信联系新郎或新娘。<br>微信号：请向本人确认',
+    txtClosing: '无论远近，您的温暖祝愿对我们而言意义深远。<br>感谢每一位莅临的嘉宾。',
+    copyBtn: '复制', copiedBtn: '已复制 ✓'
+  },
+  ko: {
+    eyebrow: '청첩장 · Wedding Invitation',
+    nameGroom: '김석환', nameBride: '뉴 쟈첸',
+    invite: '서로를 알아가며 함께 걸어온 시간 끝에<br>이제 평생을 함께하고자 합니다.<br><br>두 사람이 사랑을 나누고 약속을 맺는<br>소중한 자리에 함께해 주셔서<br>축복해 주시면 감사하겠습니다.',
+    secCnTitle: '중국 현지 예식',  lblCnDate: '날짜',  subCnDay: '토요일',
+    lblCnTime: '시간',              subCnDoor: '입장 10:30부터',
+    lblCnVenue: '장소',
+    lblCnTransport: '중국 현지 예식장 오시는 길',
+    tnameCnSubway: '지하철', tnameCnBus: '버스', tnameCnCar: '자가용 · 주차',
+    txtCnMap: '고德지도 또는 바이두지도에서 검색해 주세요.', linkCnMap: '고德지도 열기 ↗',
+    secKrTitle: '한국 예식',  lblKrDate: '날짜',  subKrDay: '토요일',
+    lblKrTime: '시간',         subKrDoor: '입장 10:30부터',
+    lblKrVenue: '장소',
+    lblKrTransport: '한국 예식장 오시는 길',
+    tnameKrSubway: '지하철',
+    tdescKrSubway: '1호선 남포역 6번 출구 하차 후<br>영도대교에서 버스 7, 71, 508번 환승 → 75광장 하차',
+    tnameKrBus: '버스',
+    tdescKrBus: '부산역 맞은편 508번 버스 → 75광장 하차',
+    tnameKrCar: '자가용 · 주차',
+    tdescKrCar: '목장원 내부 주차 가능 (약 150대)<br>주말은 협소하오니 대중교통을 권장합니다.',
+    txtKrMap: '「목장원」을 네이버 지도 또는 카카오맵에서 검색해 주세요.', linkKrMap: '네이버 지도 열기 ↗',
+    lblRsvp: '참석 여부 안내',
+    txtRsvp: '식사 준비를 위해 참석 여부를<br>아래 날짜까지 알려주시면 감사하겠습니다.',
+    rsvpDate: '2026. 09. 05',
+    rsvpNote: '신랑 또는 신부에게 문자 또는 전화로 알려주세요.',
+    lblGift: '마음 전하실 곳',
+    roleGroom: '신랑측', roleBride: '신부측',
+    accGroomName: '김석환', accBrideName: '뉴 쟈첸',
+    lblContact: '연락처',
+    roleG: '신랑', roleB: '신부',
+    nameG: '김석환', nameB: '뉴 쟈첸',
+    txtWechat: '문의 사항은 신랑 또는 신부에게<br>문자 또는 전화로 연락해 주세요.',
+    txtClosing: '멀리서도 마음으로 함께해 주신다면<br>그것만으로도 큰 기쁨이 됩니다.<br>참석해 주시는 모든 분께 진심으로 감사드립니다.',
+    copyBtn: '복사', copiedBtn: '복사됨 ✓'
+  }
+};
+
+var currentLang = 'zh';
+
+function go(l) {
+  currentLang = l;
+  var t = TEXTS[l];
+
+  /* 텍스트 일괄 적용 */
+  function set(id, html) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+
+  set('txt-eyebrow',      t.eyebrow);
+  set('name-groom',       t.nameGroom);
+  set('name-bride',       t.nameBride);
+  set('txt-invite',       t.invite);
+  set('sec-cn-title',     t.secCnTitle);
+  set('lbl-cn-date',      t.lblCnDate);
+  set('sub-cn-day',       t.subCnDay);
+  set('lbl-cn-time',      t.lblCnTime);
+  set('sub-cn-door',      t.subCnDoor);
+  set('lbl-cn-venue',     t.lblCnVenue);
+  set('lbl-cn-transport', t.lblCnTransport);
+  set('tname-cn-subway',  t.tnameCnSubway);
+  set('tname-cn-bus',     t.tnameCnBus);
+  set('tname-cn-car',     t.tnameCnCar);
+  set('txt-cn-map',       t.txtCnMap);
+  set('link-cn-map',      t.linkCnMap);
+  set('sec-kr-title',     t.secKrTitle);
+  set('lbl-kr-date',      t.lblKrDate);
+  set('sub-kr-day',       t.subKrDay);
+  set('lbl-kr-time',      t.lblKrTime);
+  set('sub-kr-door',      t.subKrDoor);
+  set('lbl-kr-venue',     t.lblKrVenue);
+  set('lbl-kr-transport', t.lblKrTransport);
+  set('tname-kr-subway',  t.tnameKrSubway);
+  set('tdesc-kr-subway',  t.tdescKrSubway);
+  set('tname-kr-bus',     t.tnameKrBus);
+  set('tdesc-kr-bus',     t.tdescKrBus);
+  set('tname-kr-car',     t.tnameKrCar);
+  set('tdesc-kr-car',     t.tdescKrCar);
+  set('txt-kr-map',       t.txtKrMap);
+  set('link-kr-map',      t.linkKrMap);
+  set('lbl-rsvp',         t.lblRsvp);
+  set('txt-rsvp',         t.txtRsvp);
+  set('rsvp-date',        t.rsvpDate);
+  set('rsvp-note',        t.rsvpNote);
+  set('lbl-gift',         t.lblGift);
+  set('role-groom',       t.roleGroom);
+  set('role-bride',       t.roleBride);
+  set('acc-groom-name',   t.accGroomName);
+  set('acc-bride-name',   t.accBrideName);
+  set('lbl-contact',      t.lblContact);
+  set('role-g',           t.roleG);
+  set('role-b',           t.roleB);
+  set('name-g',           t.nameG);
+  set('name-b',           t.nameB);
+  set('txt-wechat',       t.txtWechat);
+  set('txt-closing',      t.txtClosing);
+
+  /* 복사 버튼 레이블 업데이트 */
+  var copyBtns = document.querySelectorAll('.copy-btn');
+  for (var i = 0; i < copyBtns.length; i++) {
+    if (!copyBtns[i].classList.contains('ok')) {
+      copyBtns[i].innerHTML = t.copyBtn;
+    }
+  }
+
+  /* 화면 전환 */
+  document.getElementById('lang-screen').classList.add('out');
+  document.getElementById('main').style.display = 'block';
+
+  setTimeout(function() {
+    window.scrollTo(0, 0);
+    initReveal();
+  }, 120);
+}
+
+/* ── 스크롤 reveal ──
+   IntersectionObserver 없는 구형 WeChat 브라우저 대비 폴백 포함 */
+function initReveal() {
+  var items = document.querySelectorAll('.rv');
+
+  if (typeof IntersectionObserver !== 'undefined') {
+    /* 최신 브라우저 */
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+
+    for (var i = 0; i < items.length; i++) {
+      var r = items[i].getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.9) items[i].classList.add('on');
+      else io.observe(items[i]);
+    }
+  } else {
+    /* 구형 WeChat / Android 브라우저: 스크롤 이벤트 폴백 */
+    function checkReveal() {
+      var h = window.innerHeight;
+      for (var i = 0; i < items.length; i++) {
+        if (!items[i].classList.contains('on')) {
+          var r = items[i].getBoundingClientRect();
+          if (r.top < h * 0.92) items[i].classList.add('on');
+        }
+      }
+    }
+    checkReveal();
+    window.addEventListener('scroll', checkReveal, { passive: true });
+  }
+}
+
+/* ── 복사 버튼 ── */
+function doCopy(btn, num) {
+  var t = TEXTS[currentLang];
+
+  /* 클립보드 API → execCommand 순서로 폴백 */
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num).catch(function() { fallbackCopy(num); });
+  } else {
+    fallbackCopy(num);
+  }
+
+  var prev = btn.innerHTML;
+  btn.classList.add('ok');
+  btn.innerHTML = t.copiedBtn;
+  setTimeout(function() { btn.classList.remove('ok'); btn.innerHTML = t.copyBtn; }, 2000);
+}
+
+function fallbackCopy(num) {
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = num;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
