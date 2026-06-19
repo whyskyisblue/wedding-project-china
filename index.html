@@ -279,9 +279,89 @@ body {
   z-index: 900; font-family: var(--f-sans);
 }
 
+#welcome-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--charcoal); /* 사진이 로딩되기 전 기본 배경색 */
+  z-index: 10000; /* 최상단에 위치 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* 사라질 때 부드럽게 */
+}
+
+/* 웰컴 화면 전체 배경 사진 설정 */
+.ws-bg-img {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/welcome_bg.jpg'); /* 👈 웰컴 화면에 쓸 사진 경로 */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.65; /* 사진 위에 글씨가 잘 보이도록 투명도 조절 */
+  filter: grayscale(20%); /* 약간의 분위기를 위한 흑백 무드 (선택사항) */
+}
+
+/* 사진 위에 얹을 웰컴 텍스트 정보 */
+.ws-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #F8F4EE;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* 글씨 가독성을 위한 그림자 */
+}
+
+.ws-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  margin-bottom: 16px;
+  animation: wsFadeUp 1.2s 0.2s both;
+}
+
+.ws-names {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(28px, 6vw, 46px);
+  font-weight: 300;
+  margin-bottom: 12px;
+  animation: wsFadeUp 1.2s 0.4s both;
+}
+
+.ws-date {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  opacity: 0.8;
+  animation: wsFadeUp 1.2s 0.6s both;
+}
+
+/* 대기화면이 꺼질 때 스타일 */
+#welcome-screen.out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 웰컴 텍스트 등장 애니메이션 */
+@keyframes wsFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 </style>
 </head>
 <body>
+
+<!-- ─── 웰컴 대기 화면 ─── -->
+<div id="welcome-screen">
+    <div class="ws-bg-img"></div> <!-- 대기화면 전용 배경 사진 -->
+    <div class="ws-inner">
+      <p class="ws-title">SAVE THE DATE</p>
+      <p class="ws-names">Seokhwan & Jiaqian</p>
+      <p class="ws-date">2026. 09. 12</p>
+    </div>
+</div>  
+
 
 <!-- ── 언어 선택 ── -->
 <div id="lang-screen">
@@ -756,6 +836,23 @@ function fallbackCopy(num) {
     document.body.removeChild(ta);
   } catch(e) {}
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  // 3.5초(3500ms) 동안 대기 화면을 보여준 뒤 제거하는 타이머
+  // 원하시는 초에 따라 시간을 조절하세요 (예: 3초 = 3000, 4초 = 4000)
+  setTimeout(() => {
+    const welcomeScreen = document.getElementById('welcome-screen');
+    if (welcomeScreen) {
+      welcomeScreen.classList.add('out'); // 'out' 클래스를 붙여 서서히 사라지게 함
+      
+      // 애니메이션이 끝난 후 완전히 구조에서 숨김 (안정성 확보)
+      setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+      }, 1200); // CSS에 지정한 transition 시간(1.2초)과 맞춰줍니다.
+    }
+  }, 3500); 
+});
+
 </script>
 </body>
 </html>
